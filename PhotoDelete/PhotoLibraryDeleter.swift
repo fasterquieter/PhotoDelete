@@ -285,7 +285,7 @@ final class PhotoLibraryDeleter: ObservableObject {
             processed = 1
             remaining = 0
             testDeletion = photo
-            statusText = "Test finished. 1 photograph was deleted from this iPad."
+            statusText = "Test finished. 1 photograph was deleted from this device."
         } catch {
             snapshotTotal = 0
             processed = 0
@@ -378,7 +378,7 @@ final class PhotoLibraryDeleter: ObservableObject {
 
             let end = min(index + size, identifiers.count)
             let batch = Array(identifiers[index..<end])
-            statusText = "Deleting \(batch.count.formatted()) at a time. Confirm the system prompt if iPadOS shows one."
+            statusText = "Deleting \(batch.count.formatted()) at a time. Confirm the system prompt if iOS shows one."
             processed = index
             remaining = identifiers.count - index
             await Task.yield()
@@ -534,11 +534,11 @@ final class PhotoLibraryDeleter: ObservableObject {
         case .authorized:
             return ""
         case .limited:
-            return "Full Photo Access is required. Limited access would delete only items you picked, not the library on this iPad. Open Settings, tap PhotoDelete, then Photos, and choose Full Access."
+            return "Full Photo Access is required. Limited access would delete only items you picked, not the library on this device. Open Settings, tap PhotoDelete, then Photos, and choose Full Access."
         case .denied:
             return "Photo access is off. Open Settings, tap PhotoDelete, then Photos, and choose Full Access."
         case .restricted:
-            return "Photo access is restricted on this iPad, so nothing can be deleted."
+            return "Photo access is restricted on this device, so nothing can be deleted."
         case .notDetermined:
             return "Photo access is required before anything can be deleted."
         @unknown default:
@@ -575,7 +575,7 @@ final class PhotoLibraryDeleter: ObservableObject {
         case 3164:
             return "Photos asked to download an original from iCloud. PhotoDelete did not download it, and this batch was not deleted."
         case 3305:
-            return "Photos reported there is not enough free space to continue. Remove other files from this iPad and try again. Items already deleted stay deleted."
+            return "Photos reported there is not enough free space to continue. Remove other files from this device and try again. Items already deleted stay deleted."
         case 3310, 3311:
             return "Photo access was denied. Allow Full Access in Settings, then try again."
         case 3114, 3142, 3143:

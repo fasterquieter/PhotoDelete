@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @StateObject private var model = PhotoLibraryDeleter()
 
     var body: some View {
@@ -24,7 +25,7 @@ struct ContentView: View {
                     actions
                     footnote
                 }
-                .padding(28)
+                .padding(horizontalSizeClass == .compact ? 20 : 28)
                 .frame(maxWidth: 720)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -44,7 +45,7 @@ struct ContentView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This deletes \(model.counts.total.formatted()) photographs, Live Photos, and videos stored on this iPad. Shared albums are not included.\n\nPhotoDelete does not contact iCloud. If iCloud Photos is on, iPadOS can still sync these deletions. This app cannot check that setting.\n\niPadOS will ask you to confirm \(model.batchChoice.confirmationPhrase).")
+            Text("This deletes \(model.counts.total.formatted()) photographs, Live Photos, and videos stored on this device. Shared albums are not included.\n\nPhotoDelete does not contact iCloud. If iCloud Photos is on, iOS can still sync these deletions. This app cannot check that setting.\n\niOS will ask you to confirm \(model.batchChoice.confirmationPhrase).")
         }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
@@ -58,7 +59,7 @@ struct ContentView: View {
 
     private var testAlertMessage: String {
         let detail = model.pendingTest?.detail ?? "1 photograph"
-        return "\(detail)\n\nNothing else is deleted. PhotoDelete does not contact iCloud. iPadOS will ask you to confirm."
+        return "\(detail)\n\nNothing else is deleted. PhotoDelete does not contact iCloud. iOS will ask you to confirm."
     }
 
     private var header: some View {
@@ -66,7 +67,7 @@ struct ContentView: View {
             Text("PhotoDelete")
                 .font(.largeTitle)
                 .bold()
-            Text("Deletes photographs and videos stored on this iPad.")
+            Text("Deletes photographs and videos stored on this device.")
                 .font(.title3)
                 .foregroundStyle(.secondary)
         }
@@ -78,9 +79,9 @@ struct ContentView: View {
                 .font(.headline)
                 .foregroundStyle(.orange)
             Text("PhotoDelete does not connect to iCloud. It does not download or upload photographs.")
-            Text("It deletes only items already stored in this iPad’s Photos library. Shared albums are skipped.")
+            Text("It deletes only items already stored in this device’s Photos library. Shared albums are skipped.")
                 .bold()
-            Text("If iCloud Photos is still turned on, iPadOS can sync those deletions to iCloud and your other devices. This app cannot check that setting.")
+            Text("If iCloud Photos is still turned on, iOS can sync those deletions to iCloud and your other devices. This app cannot check that setting.")
             Text("Delete one photo first. If that photograph disappears from iCloud.com or your other devices, stop.")
                 .bold()
         }
@@ -92,7 +93,7 @@ struct ContentView: View {
 
     private var libraryCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("On this iPad")
+            Text("On this device")
                 .font(.headline)
             countRow("Photographs", value: model.counts.photographs, icon: "photo")
             countRow("Videos", value: model.counts.videos, icon: "video")
@@ -135,7 +136,7 @@ struct ContentView: View {
                     .font(.body)
             }
             if model.isDeletingAll {
-                Text("Keep this screen open. iPadOS confirms each batch with its own prompt. Stop waits until the current batch finishes.")
+                Text("Keep this screen open. iOS confirms each batch with its own prompt. Stop waits until the current batch finishes.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -148,13 +149,13 @@ struct ContentView: View {
             Label("Check before deleting the rest", systemImage: "checkmark.circle.fill")
                 .font(.headline)
                 .foregroundStyle(.green)
-            Text("1 photograph was deleted from this iPad only. PhotoDelete did not contact iCloud.")
+            Text("1 photograph was deleted from this device only. PhotoDelete did not contact iCloud.")
             Text(photo.detail)
                 .font(.system(.body, design: .monospaced))
                 .textSelection(.enabled)
-            Text("Look for that photograph on iCloud.com or another device. If it is still there, or it was never in iCloud, this deletion stayed on this iPad. If it disappeared there, stop. iCloud Photos is still syncing.")
+            Text("Look for that photograph on iCloud.com or another device. If it is still there, or it was never in iCloud, this deletion stayed on this device. If it disappeared there, stop. iCloud Photos is still syncing.")
                 .bold()
-            Text("The photograph is in Recently Deleted on this iPad until you remove it in the Photos app.")
+            Text("The photograph is in Recently Deleted on this device until you remove it in the Photos app.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
